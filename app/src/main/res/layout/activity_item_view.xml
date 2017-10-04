@@ -1,9 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="command_e.androidintensive.itplace.simbirsoft.weatherwidget.ItemView">
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <ImageView
+            android:id="@+id/icon_weather"
+            android:layout_width="@dimen/item_on_activity_picture_width"
+            android:layout_height="@dimen/item_on_activity_picture_height"
+            android:contentDescription="@string/icon_weather_description"
+            android:src="@drawable/sunny"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/day_of_week"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/then_use_layout_weight"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/item_text_left_padding"
+                android:text="@string/day_of_weak"
+                android:textSize="@dimen/item_on_activity_text_size"
+                android:gravity="left|center_vertical"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/then_use_layout_weight"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/item_text_left_padding"
+                android:text="@string/date"
+                android:textSize="@dimen/item_on_activity_text_size"
+                android:gravity="left|center_vertical"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/temperature"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/then_use_layout_weight"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/item_text_left_padding"
+                android:text="@string/temperature"
+                android:textSize="@dimen/item_on_activity_text_size"
+                android:gravity="left|center_vertical"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/weather_characteristic"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/then_use_layout_weight"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/item_text_left_padding"
+                android:text="@string/weather_characteristic"
+                android:textSize="@dimen/item_on_activity_text_size"
+                android:gravity="left|center_vertical"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+        </LinearLayout>
+    </LinearLayout>

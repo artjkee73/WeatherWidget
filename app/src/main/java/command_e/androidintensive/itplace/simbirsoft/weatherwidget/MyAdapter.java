@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
+
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder> {
+
+    private final String LOG = "MyLog";
 
     private LayoutInflater inflater;
     private List<Item> listItems;
@@ -27,9 +32,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder> {
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recycler_view_item,parent,false);
 
-        ItemViewHolder itemViewHolder = new ItemViewHolder(view);
-        return itemViewHolder;
+        return new ItemViewHolder(view);
     }
+
 
     @Override
     public void onBindViewHolder(ItemViewHolder itemViewHolder, int position) {
@@ -39,6 +44,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder> {
         itemViewHolder.temperature.setText(listItems.get(position).getTemperature());
         itemViewHolder.weatherCharacter.setText(listItems.get(position).getWeatherCharacter());
 
+
     }
 
     @Override
@@ -47,13 +53,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder> {
     }
 
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
 
-
-    public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private final String LOG = "MyLog";
 
         CardView cardView;
         ImageView iconWeather;
@@ -77,14 +79,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder> {
 
         @Override
         public void onClick(View v) {
-            Bundle extras = new Bundle();
-            extras.putString("dayOfWeek", dayOfWeek.getText().toString());
-            extras.putString("date", date.getText().toString());
-            extras.putString("temperature", temperature.getText().toString());
-            extras.putString("weatherCharacter",weatherCharacter.getText().toString());
-            Intent intent = new Intent(v.getContext(), ItemView.class);
-            intent.putExtras(extras);
-            v.getContext().startActivity(intent);
+            switch (v.getId()){
+                case R.id.item_card_view :
+                    Bundle extras = new Bundle();
+                    extras.putString("dayOfWeek", dayOfWeek.getText().toString());
+                    extras.putString("date", date.getText().toString());
+                    extras.putString("temperature", temperature.getText().toString());
+                    extras.putString("weatherCharacter",weatherCharacter.getText().toString());
+                    Intent intent = new Intent(v.getContext(), ItemView.class);
+                    intent.putExtras(extras);
+                    v.getContext().startActivity(intent);
+            }
         }
     }
 }
