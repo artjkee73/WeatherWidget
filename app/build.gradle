@@ -1,8 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:2.0.1'
+    }
+
     defaultConfig {
         applicationId "command_e.androidintensive.itplace.simbirsoft.weatherwidget"
         minSdkVersion 21

@@ -7,12 +7,16 @@ import android.support.v7.widget.CardView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 public class ItemView extends AppCompatActivity {
     ImageView iconWeather;
     TextView dayOfWeek;
     TextView date;
     TextView temperature;
     TextView weatherCharacter;
+    Realm realm;
 
 
 
@@ -26,16 +30,23 @@ public class ItemView extends AppCompatActivity {
         date = (TextView)findViewById(R.id.date);
         temperature = (TextView)findViewById(R.id.temperature);
         weatherCharacter = (TextView)findViewById(R.id.weather_characteristic);
-        
-        Intent intent = getIntent();
-        String dayOfWeekI = intent.getStringExtra("dayOfWeek");
-        String dateI = intent.getStringExtra("date");
-        String temperatureI = intent.getStringExtra("temperature");
-        String weatherCharacterI = intent.getStringExtra("weatherCharacter");
+        bindingDataFromDB(); //  приём даты и Bundle и выборка из бд по ней
 
-        dayOfWeek.setText(dayOfWeekI);
-        date.setText(dateI);
-        temperature.setText(temperatureI);
-        weatherCharacter.setText(weatherCharacterI);
     }
+
+    public void bindingDataFromDB(){
+        Intent intent = getIntent();
+        String dateI = intent.getStringExtra("date");
+        realm = Realm.getDefaultInstance();
+        RealmResults<Item> results = realm.where(Item.class)
+                .equalTo("date" , dateI).findAll();
+        Item dayItem = results.where()
+                .equalTo("date" , dateI).findFirst();
+
+        dayOfWeek.setText(dayItem.getDayOfWeek());
+        date.setText(dayItem.getDate());
+        temperature.setText(dayItem.getTemperature());
+        weatherCharacter.setText(dayItem.getWeatherCharacter());
+    }
+
 }

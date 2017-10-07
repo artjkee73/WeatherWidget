@@ -5,28 +5,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.List;
-
+import io.realm.RealmResults;
 
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder> {
 
-    private final String LOG = "MyLog";
+    private static final String LOG = "MyLog";
 
     private LayoutInflater inflater;
-    private List<Item> listItems;
+    private RealmResults<Item> results;
 
-    MyAdapter(Context context, List<Item> listItems){
+    MyAdapter(Context context, RealmResults<Item> results){
         this.inflater = LayoutInflater.from(context);
-        this.listItems = listItems;
+        this.results = results;
     }
+
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,24 +36,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder> {
 
     @Override
     public void onBindViewHolder(ItemViewHolder itemViewHolder, int position) {
-        itemViewHolder.iconWeather.setImageResource(listItems.get(position).getPictureId());
-        itemViewHolder.dayOfWeek.setText(listItems.get(position).getDayOfWeek());
-        itemViewHolder.date.setText(listItems.get(position).getDate());
-        itemViewHolder.temperature.setText(listItems.get(position).getTemperature());
-        itemViewHolder.weatherCharacter.setText(listItems.get(position).getWeatherCharacter());
+        itemViewHolder.iconWeather.setImageResource(results.get(position).getPictureId());
+        itemViewHolder.dayOfWeek.setText(results.get(position).getDayOfWeek());
+        itemViewHolder.date.setText(results.get(position).getDate());
+        itemViewHolder.temperature.setText(results.get(position).getTemperature());
+        itemViewHolder.weatherCharacter.setText(results.get(position).getWeatherCharacter());
 
 
     }
 
     @Override
     public int getItemCount() {
-        return listItems.size();
+        return results.size();
     }
 
 
-
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final String LOG = "MyLog";
+        private static final String LOG = "MyLog";
 
         CardView cardView;
         ImageView iconWeather;
@@ -82,10 +79,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder> {
             switch (v.getId()){
                 case R.id.item_card_view :
                     Bundle extras = new Bundle();
-                    extras.putString("dayOfWeek", dayOfWeek.getText().toString());
-                    extras.putString("date", date.getText().toString());
-                    extras.putString("temperature", temperature.getText().toString());
-                    extras.putString("weatherCharacter",weatherCharacter.getText().toString());
+                    extras.putString("date", date.getText().toString()); //передача в Intent даты для последующей выборки и БД
                     Intent intent = new Intent(v.getContext(), ItemView.class);
                     intent.putExtras(extras);
                     v.getContext().startActivity(intent);

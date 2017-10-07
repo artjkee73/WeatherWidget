@@ -3,12 +3,15 @@ package command_e.androidintensive.itplace.simbirsoft.weatherwidget;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmObject;
+import io.realm.RealmResults;
+
 /**
  * Created by artemqa on 02.10.2017.
  */
 
-public class Item {
-
+public class Item extends RealmObject {
 
     private int pictureId;
     private String dayOfWeek;
@@ -16,42 +19,47 @@ public class Item {
     private String temperature;
     private String weatherCharacter;
 
-    Item(int pictureId,String dayOfWeek, String date, String temperature,String weatherCharacter){
-        this.pictureId = pictureId;
-        this.dayOfWeek = dayOfWeek;
-        this.date = date;
-        this.temperature = temperature;
-        this.weatherCharacter = weatherCharacter;
+    public Item(){
+
     }
 
     public int getPictureId() {
         return pictureId;
     }
 
+    public void setPictureId(int pictureId) {
+        this.pictureId = pictureId;
+    }
+
     public String getDayOfWeek() {
         return dayOfWeek;
+    }
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public String getDate() {
         return date;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String getTemperature() {
         return temperature;
+    }
+
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
     }
 
     public String getWeatherCharacter() {
         return weatherCharacter;
     }
 
-    public static List<Item> getFakeItems(){
-        ArrayList<Item> itemsList = new ArrayList<>();
-        for(int i= 1;i<11;i++){
-
-            itemsList.add(new Item(R.drawable.sunny,"Monday",i + ".01.2017","+20","Sunny"));
-
-        }
-        return itemsList;
+    public void setWeatherCharacter(String weatherCharacter) {
+        this.weatherCharacter = weatherCharacter;
     }
-
 }
