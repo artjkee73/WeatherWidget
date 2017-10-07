@@ -11,9 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.List;
-
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder> {
@@ -21,12 +20,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder> {
     private final String LOG = "MyLog";
 
     private LayoutInflater inflater;
-    private List<Item> listItems;
+    private RealmResults<Item> results;
 
-    MyAdapter(Context context, List<Item> listItems){
+    MyAdapter(Context context, RealmResults<Item> results){
         this.inflater = LayoutInflater.from(context);
-        this.listItems = listItems;
+        this.results = results;
     }
+
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,20 +38,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder> {
 
     @Override
     public void onBindViewHolder(ItemViewHolder itemViewHolder, int position) {
-        itemViewHolder.iconWeather.setImageResource(listItems.get(position).getPictureId());
-        itemViewHolder.dayOfWeek.setText(listItems.get(position).getDayOfWeek());
-        itemViewHolder.date.setText(listItems.get(position).getDate());
-        itemViewHolder.temperature.setText(listItems.get(position).getTemperature());
-        itemViewHolder.weatherCharacter.setText(listItems.get(position).getWeatherCharacter());
+        itemViewHolder.iconWeather.setImageResource(results.get(position).getPictureId());
+        itemViewHolder.dayOfWeek.setText(results.get(position).getDayOfWeek());
+        itemViewHolder.date.setText(results.get(position).getDate());
+        itemViewHolder.temperature.setText(results.get(position).getTemperature());
+        itemViewHolder.weatherCharacter.setText(results.get(position).getWeatherCharacter());
 
 
     }
 
     @Override
     public int getItemCount() {
-        return listItems.size();
+        return results.size();
     }
-
 
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

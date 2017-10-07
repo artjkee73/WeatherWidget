@@ -26,7 +26,7 @@ public class ItemView extends AppCompatActivity {
         date = (TextView)findViewById(R.id.date);
         temperature = (TextView)findViewById(R.id.temperature);
         weatherCharacter = (TextView)findViewById(R.id.weather_characteristic);
-        
+
         Intent intent = getIntent();
         String dayOfWeekI = intent.getStringExtra("dayOfWeek");
         String dateI = intent.getStringExtra("date");
