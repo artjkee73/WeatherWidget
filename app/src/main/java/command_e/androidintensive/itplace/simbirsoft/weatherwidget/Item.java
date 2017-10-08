@@ -1,11 +1,6 @@
 package command_e.androidintensive.itplace.simbirsoft.weatherwidget;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.realm.Realm;
 import io.realm.RealmObject;
-import io.realm.RealmResults;
 
 /**
  * Created by artemqa on 02.10.2017.

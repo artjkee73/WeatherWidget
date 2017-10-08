@@ -30,11 +30,13 @@ public class ItemView extends AppCompatActivity {
         date = (TextView)findViewById(R.id.date);
         temperature = (TextView)findViewById(R.id.temperature);
         weatherCharacter = (TextView)findViewById(R.id.weather_characteristic);
+
         bindingDataFromDB(); //  приём даты и Bundle и выборка из бд по ней
 
     }
 
     public void bindingDataFromDB(){
+
         Intent intent = getIntent();
         String dateI = intent.getStringExtra("date");
         realm = Realm.getDefaultInstance();

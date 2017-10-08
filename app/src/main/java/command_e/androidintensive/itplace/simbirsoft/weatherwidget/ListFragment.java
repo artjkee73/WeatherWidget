@@ -47,7 +47,7 @@ public class ListFragment extends Fragment {
         recyclerView.setAdapter(recyclerViewAdapter);
 
         refreshRecycleViewOnChangeRealmResult();//обновление данных в RecyclerView
-                                                       // при изменении выборки запроса вывода всех записей
+        // при изменении выборки запроса вывода всех записей
 
         return viewGroup;
     }
@@ -56,17 +56,16 @@ public class ListFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         realm.removeAllChangeListeners();
-        if (!realm.isClosed()) {
-            realm.close();
-        }
     }
+
 
     public RealmResults<Item> findAllItems() {
         Log.d(LOG, "Произошла выборка данных из бд");
         Realm realm = Realm.getDefaultInstance();
         return realm.where(Item.class).findAll();
     }
-    private void refreshRecycleViewOnChangeRealmResult(){
+
+    private void refreshRecycleViewOnChangeRealmResult() {
         realm = Realm.getDefaultInstance();
         RealmResults<Item> results = realm.where(Item.class).findAll();
 
@@ -74,11 +73,10 @@ public class ListFragment extends Fragment {
             @Override
             public void onChange(Object o) {
                 recyclerViewAdapter.notifyDataSetChanged();
-                Log.d(LOG,"Список обновлён");
+                Log.d(LOG, "Список обновлён");
             }
         });
     }
 }
-
 
 
