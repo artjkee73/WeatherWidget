@@ -1,4 +1,4 @@
-package command_e.androidintensive.itplace.simbirsoft.weatherwidget;
+package command_e.androidintensive.itplace.simbirsoft.weatherwidget.realm.model;
 
 import io.realm.RealmObject;
 
@@ -6,7 +6,7 @@ import io.realm.RealmObject;
  * Created by artemqa on 02.10.2017.
  */
 
-public class Item extends RealmObject {
+public class Day extends RealmObject {
 
     private int pictureId;
     private String dayOfWeek;
@@ -14,7 +14,7 @@ public class Item extends RealmObject {
     private String temperature;
     private String weatherCharacter;
 
-    public Item(){
+    public Day(){
 
     }
 

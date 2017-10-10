@@ -1,16 +1,19 @@
-package command_e.androidintensive.itplace.simbirsoft.weatherwidget;
+package command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.R;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.realm.model.Day;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class ItemView extends AppCompatActivity {
+public class ItemActivity extends AppCompatActivity {
+    private static final String LOG = "MyLog";
+
     ImageView iconWeather;
     TextView dayOfWeek;
     TextView date;
@@ -23,7 +26,7 @@ public class ItemView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_view);
+        setContentView(R.layout.activity_item);
 
         iconWeather = (ImageView) findViewById(R.id.icon_weather);
         dayOfWeek = (TextView)findViewById(R.id.day_of_week);
@@ -40,15 +43,15 @@ public class ItemView extends AppCompatActivity {
         Intent intent = getIntent();
         String dateI = intent.getStringExtra("date");
         realm = Realm.getDefaultInstance();
-        RealmResults<Item> results = realm.where(Item.class)
+        RealmResults<Day> results = realm.where(Day.class)
                 .equalTo("date" , dateI).findAll();
-        Item dayItem = results.where()
+        Day day = results.where()
                 .equalTo("date" , dateI).findFirst();
 
-        dayOfWeek.setText(dayItem.getDayOfWeek());
-        date.setText(dayItem.getDate());
-        temperature.setText(dayItem.getTemperature());
-        weatherCharacter.setText(dayItem.getWeatherCharacter());
+        dayOfWeek.setText(day.getDayOfWeek());
+        date.setText(day.getDate());
+        temperature.setText(day.getTemperature());
+        weatherCharacter.setText(day.getWeatherCharacter());
     }
 
 }
