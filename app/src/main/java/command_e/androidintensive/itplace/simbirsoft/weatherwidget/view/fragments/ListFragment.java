@@ -30,10 +30,21 @@ public class ListFragment extends Fragment {
     RecyclerViewAdapter recyclerViewAdapter;
     LinearLayoutManager recyclerViewLayoutManager;
 
+    public static ListFragment newInstance(String title){
+        Bundle args = new Bundle();
+        args.putString("title",title);
+        ListFragment fragment = new ListFragment();
+        fragment.setArguments(args);
+
+        return new ListFragment();
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,7 +70,9 @@ public class ListFragment extends Fragment {
 
 //        refreshRecycleViewOnChangeRealmResult();//обновление данных в RecyclerView
                                                 // при изменении выборки запроса вывода всех записей
-    }
+        }
+
+
 
     public RealmResults<Day> findAllItems() {
         Log.d(LOG, "Произошла выборка данных из бд");

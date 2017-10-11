@@ -9,12 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import java.util.List;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.R;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.model.Model;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.presenter.Presenter;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.realm.model.Day;
-import command_e.androidintensive.itplace.simbirsoft.weatherwidget.utils.Util;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.fragments.ListFragment;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.adapters.ViewPagerAdapter;
 import io.realm.Realm;
@@ -39,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void init(){
 
-
+        Log.d(LOG,"init(main activity)");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -67,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupViewPager(ViewPager viewPager) {
+        Log.d(LOG,"setupViewPager");
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addTitleFragment(getString(R.string.first_tab));
         adapter.addTitleFragment(getString(R.string.second_tab));
@@ -99,12 +98,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void showDays(RealmResults<Day> daysList){
         Log.d(LOG," переданные из model данные пришли во view(MainActivity) , дальше идут в фрагменты " + daysList);
-        ListFragment fragmentFirst = (ListFragment) getSupportFragmentManager().findFragmentByTag(Util.getFragmentTag(R.id.viewpager,0));
+        ListFragment fragmentFirst = (ListFragment) ViewPagerAdapter.getFragmentByPosition(0);
         Log.d(LOG,"fragmentFirst :" + fragmentFirst);
-        fragmentFirst.showDays(daysList);
+//        fragmentFirst.showDays(daysList);             // если тут раскомитить, то приложение упадёт, еще не запустившись,
+                                                        // потому что я пытаюсь обратьться к ещё не созданному фрагменту,
+                                                        // что бы передать в него результаты выборки из бд для отображения их в recyclerview
 
-        ListFragment fragmentSecond = (ListFragment) getSupportFragmentManager().findFragmentByTag(Util.getFragmentTag(R.id.viewpager,1));
+        ListFragment fragmentSecond = (ListFragment) ViewPagerAdapter.getFragmentByPosition(1);
         Log.d(LOG,"fragmentSecond :" + fragmentSecond);
-        fragmentSecond.showDays(daysList);
+//        fragmentSecond.showDays(daysList);            // если тут раскомитить, то приложение упадёт, еще не запустившись,
+                                                        // потому что я пытаюсь обратьться к ещё не созданному фрагменту,
+                                                        // что бы передать в него результаты выборки из бд для отображения их в recyclerview
     }
 }
