@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.R;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.realm.model.Day;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.activities.ItemActivity;
@@ -67,23 +69,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private static final String LOG = "MyLog";
 
-        CardView cardView;
-        ImageView iconWeather;
-        TextView dayOfWeek;
-        TextView date;
-        TextView temperature;
-        TextView weatherCharacter;
 
+        @BindView(R.id.icon_weather) ImageView iconWeather;
+        @BindView(R.id.day_of_week) TextView dayOfWeek;
+        @BindView(R.id.date) TextView date;
+        @BindView(R.id.temperature) TextView temperature;
+        @BindView(R.id.weather_characteristic) TextView weatherCharacter;
+        @BindView(R.id.item_card_view) CardView cardView;
 
         ItemViewHolder(View view){
             super(view);
-
-            iconWeather = (ImageView) view.findViewById(R.id.icon_weather);
-            dayOfWeek = (TextView)view.findViewById(R.id.day_of_week);
-            date = (TextView)view.findViewById(R.id.date);
-            temperature = (TextView)view.findViewById(R.id.temperature);
-            weatherCharacter = (TextView)view.findViewById(R.id.weather_characteristic);
-            cardView = (CardView) itemView.findViewById(R.id.item_card_view);
+            ButterKnife.bind(this, view);
             cardView.setOnClickListener(this);
         }
 

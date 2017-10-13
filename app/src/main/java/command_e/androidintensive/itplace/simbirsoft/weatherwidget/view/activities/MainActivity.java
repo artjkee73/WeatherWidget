@@ -8,6 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Button;
+import butterknife.ButterKnife;
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.OnClick;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.R;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.model.Model;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.presenter.Presenter;
@@ -17,47 +21,39 @@ import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.adapters
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class MainActivity extends AppCompatActivity implements android.view.View.OnClickListener,View {
+public class MainActivity extends AppCompatActivity implements View {
     private static final String LOG = "MyLog";
-    Toolbar toolbar;
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    Realm realm;
-    Button btnAddItems,btnDropDb;
-    Presenter presenter;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.viewpager) ViewPager viewPager;
+    @BindView(R.id.tablayout) TabLayout  tabLayout;
+    @BindView(R.id.btn_add_items) Button btnAddItems;
+    @BindView(R.id.btn_drop_db) Button btnDropDb;
 
+    @BindString(R.string.first_tab) String titleWeek;
+    @BindString(R.string.second_tab) String titleMonth;
+
+    Presenter presenter;
+    Realm realm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG,"onCreate");
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         init();
 
     }
 
     private void init(){
-
-        Log.d(LOG,"init(main activity)");
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
-
-        btnAddItems = (Button) findViewById(R.id.btn_add_items);
-        btnAddItems.setOnClickListener(this);
-
-        btnDropDb = (Button) findViewById(R.id.btn_drop_db);
-        btnDropDb.setOnClickListener(this);
 
         Realm.init(this);
         realm = Realm.getDefaultInstance();
-
         Model model = new Model(realm);
         presenter = new Presenter(model);
         presenter.attachView(this);
@@ -67,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements android.view.View
     private void setupViewPager(ViewPager viewPager) {
         Log.d(LOG,"setupViewPager");
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addTitleFragment(getString(R.string.first_tab));
-        adapter.addTitleFragment(getString(R.string.second_tab));
+        adapter.addTitleFragment(titleWeek);
+        adapter.addTitleFragment(titleMonth);
         viewPager.setAdapter(adapter);
     }
 
@@ -93,21 +89,18 @@ public class MainActivity extends AppCompatActivity implements android.view.View
         presenter.detachView();
     }
 
-    @Override
-    public void onClick(android.view.View v) {
-        switch (v.getId()) {
-            case R.id.btn_add_items:
-
-                presenter.add();
-                Log.d(LOG,"Созданы фейковые записи");
-
-                break;
-            case R.id.btn_drop_db:
-                presenter.clear();
-                Log.d(LOG,"Записи удалены");
-                break;
-        }
+    @OnClick(R.id.btn_add_items)
+    void onClickBtnAddItems() {
+        presenter.add();
+        Log.d(LOG,"Созданы фейковые записи");
     }
+
+    @OnClick(R.id.btn_drop_db)
+    void onClickBtnDropItems() {
+        presenter.clear();
+        Log.d(LOG,"Записи удалены");
+    }
+
     public void showDays(RealmResults<Day> daysList){
         Log.d(LOG," переданные из model данные пришли во view(MainActivity) " + daysList);
     }
