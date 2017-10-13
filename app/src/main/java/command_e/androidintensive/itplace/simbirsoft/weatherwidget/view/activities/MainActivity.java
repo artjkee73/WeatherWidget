@@ -7,18 +7,17 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.R;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.model.Model;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.presenter.Presenter;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.realm.model.Day;
-import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.fragments.ListFragment;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.activities.interfaces.View;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.adapters.ViewPagerAdapter;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements android.view.View.OnClickListener,View {
     private static final String LOG = "MyLog";
     Toolbar toolbar;
     TabLayout tabLayout;
@@ -30,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(LOG,"onCreate");
         setContentView(R.layout.activity_main);
         init();
 
@@ -73,6 +73,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onStart() {
+        Log.d(LOG,"onStart");
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(LOG,"onResume");
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (!realm.isClosed()) {
@@ -82,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.btn_add_items:
 
@@ -97,17 +109,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     public void showDays(RealmResults<Day> daysList){
-        Log.d(LOG," переданные из model данные пришли во view(MainActivity) , дальше идут в фрагменты " + daysList);
-        ListFragment fragmentFirst = (ListFragment) ViewPagerAdapter.getFragmentByPosition(0);
-        Log.d(LOG,"fragmentFirst :" + fragmentFirst);
-//        fragmentFirst.showDays(daysList);             // если тут раскомитить, то приложение упадёт, еще не запустившись,
-                                                        // потому что я пытаюсь обратьться к ещё не созданному фрагменту,
-                                                        // что бы передать в него результаты выборки из бд для отображения их в recyclerview
-
-        ListFragment fragmentSecond = (ListFragment) ViewPagerAdapter.getFragmentByPosition(1);
-        Log.d(LOG,"fragmentSecond :" + fragmentSecond);
-//        fragmentSecond.showDays(daysList);            // если тут раскомитить, то приложение упадёт, еще не запустившись,
-                                                        // потому что я пытаюсь обратьться к ещё не созданному фрагменту,
-                                                        // что бы передать в него результаты выборки из бд для отображения их в recyclerview
+        Log.d(LOG," переданные из model данные пришли во view(MainActivity) " + daysList);
     }
 }

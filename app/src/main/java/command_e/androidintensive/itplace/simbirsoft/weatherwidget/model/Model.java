@@ -1,5 +1,7 @@
 package command_e.androidintensive.itplace.simbirsoft.weatherwidget.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import io.realm.RealmResults;
 
 public class Model {
     private Realm realm;
+    private static final String LOG = "MyLog";
    public Model (Realm realm){
         this.realm = realm;
     }
@@ -36,10 +39,12 @@ public class Model {
             day.setWeatherCharacter("Sunny");
             daysList.add(day);
         }
+
         realm.executeTransaction(new Realm.Transaction(){
             @Override
             public void execute(Realm realm){
                 realm.insert(daysList);
+                Log.d(LOG,"Model добавил даннве в БД");
             }
         });
 

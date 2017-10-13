@@ -5,6 +5,7 @@ package command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.fragmen
  */
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,35 +14,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.R;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.model.Model;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.presenter.Presenter;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.realm.model.Day;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.adapters.RecyclerViewAdapter;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.activities.interfaces.View
+{
 
-    private final String LOG = "MyLog";
+    private static final String LOG = "MyLog";
     Realm realm;
     RecyclerView recyclerView;
     RecyclerViewAdapter recyclerViewAdapter;
     LinearLayoutManager recyclerViewLayoutManager;
+    Presenter presenter;
 
-    public static ListFragment newInstance(String title){
+    public static ListFragment newInstance(String title) {
         Bundle args = new Bundle();
-        args.putString("title",title);
+        args.putString("title", title);
         ListFragment fragment = new ListFragment();
         fragment.setArguments(args);
-
+        Log.d(LOG, "Create fragment");
         return new ListFragment();
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG, "onCreate fragment");
+
+        realm = Realm.getDefaultInstance();
+        Model model = new Model(realm);
+        presenter = new Presenter(model);
+        presenter.attachView(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -49,6 +58,7 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(LOG, "onCreateView fragment");
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.recycler_view, container, false);
         recyclerView = (RecyclerView) viewGroup.findViewById(R.id.recyclerView);
         init();
@@ -57,21 +67,34 @@ public class ListFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        Log.d(LOG, "onActivityCreated fragment");
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        Log.d(LOG, "onStart fragment");
+        super.onStart();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         realm.removeAllChangeListeners();
+        presenter.detachView();
     }
 
-    public void init(){
+    public void init() {
         recyclerViewLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
         recyclerViewAdapter = new RecyclerViewAdapter(getContext(), findAllItems());
         recyclerView.setAdapter(recyclerViewAdapter);
+        presenter.viewIsReady();
 
-//        refreshRecycleViewOnChangeRealmResult();//обновление данных в RecyclerView
-                                                // при изменении выборки запроса вывода всех записей
-        }
-
+        refreshRecycleViewOnChangeRealmResult();//обновление данных в RecyclerView
+//         при изменении выборки запроса вывода всех записей
+    }
 
 
     public RealmResults<Day> findAllItems() {
@@ -80,8 +103,8 @@ public class ListFragment extends Fragment {
         return realm.where(Day.class).findAll();
     }
 
-    public void showDays( RealmResults<Day> daysList){
-        Log.d(LOG,"данне пришли из MainActivity во fragment, передаем их адаптеру");
+    public void showDays(RealmResults<Day> daysList) {
+        Log.d(LOG, "данные пришли из presenter во fragment, передаем их адаптеру" + daysList );
         recyclerViewAdapter.setData(daysList);
     }
 
@@ -92,7 +115,7 @@ public class ListFragment extends Fragment {
         results.addChangeListener(new RealmChangeListener() {
             @Override
             public void onChange(Object o) {
-                recyclerViewAdapter.notifyDataSetChanged();
+                presenter.viewIsReady();
                 Log.d(LOG, "Список обновлён");
             }
         });

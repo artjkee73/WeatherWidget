@@ -2,24 +2,19 @@ package command_e.androidintensive.itplace.simbirsoft.weatherwidget.presenter;
 
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import command_e.androidintensive.itplace.simbirsoft.weatherwidget.R;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.model.Model;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.realm.model.Day;
-import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.activities.MainActivity;
-import io.realm.Realm;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.activities.interfaces.View;
 import io.realm.RealmResults;
 
 /**
  * Created by artemqa on 09.10.2017.
  */
 
-public class Presenter{
+public class Presenter {
     private static final String LOG = "MyLog";;
 
-    private MainActivity view;
+    private View view;
     private Model model;
 
     public Presenter(Model model){
@@ -27,7 +22,7 @@ public class Presenter{
         this.model = model;
     }
 
-    public void attachView( MainActivity view){
+    public void attachView( View view){
 
         Log.d(LOG,"Presenter получил view");
         this.view = view;
@@ -39,15 +34,17 @@ public class Presenter{
 
     public void viewIsReady(){
         Log.d(LOG,"Загрузка данных из бд во view при открытии приложения ");
-//        loadDays();
-        add();
+        loadDays();
     }
 
     public void add(){
+        Log.d(LOG,"Presenter говорит model добавить данные");
         model.addDays(new Model.CompleteCallback(){
         @Override
             public void onComplete(){
+            Log.d(LOG,"Сработал callback для обновления данных после добавления");
                 loadDays();
+
         }
     });
     }
