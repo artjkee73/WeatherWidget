@@ -52,4 +52,11 @@ public class ItemActivity extends AppCompatActivity {
         weatherCharacter.setText(day.getWeatherCharacter());
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (!realm.isClosed()) {
+            realm.close();
+        }
+    }
 }

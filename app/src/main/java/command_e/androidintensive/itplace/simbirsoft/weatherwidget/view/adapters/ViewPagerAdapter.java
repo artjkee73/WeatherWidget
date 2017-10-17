@@ -7,9 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
-import android.view.ViewGroup;
 
-import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.fragments.ListFragment;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.fragments.MonthFragment;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.fragments.WeekFragment;
 
 
 import java.util.ArrayList;
@@ -30,9 +30,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return  ListFragment.newInstance(listTitle.get(position));
+                return WeekFragment.newInstance(listTitle.get(position));
             case 1:
-                return ListFragment.newInstance(listTitle.get(position));
+                return MonthFragment.newInstance(listTitle.get(position));
             default:
                 return null;
         }

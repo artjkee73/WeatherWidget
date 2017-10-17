@@ -13,45 +13,50 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Button;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.R;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.model.Model;
-import command_e.androidintensive.itplace.simbirsoft.weatherwidget.presenter.Presenter;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.presenter.FragmentsPresenter;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.realm.model.Day;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.activities.interfaces.FragmentView;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.adapters.RecyclerViewAdapter;
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
-public class ListFragment extends Fragment implements command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.activities.interfaces.View
-{
+public class MonthFragment extends Fragment implements FragmentView {
 
+    private static final int MonthFragment = 1;
     private static final String LOG = "MyLog";
     Realm realm;
     RecyclerView recyclerView;
     RecyclerViewAdapter recyclerViewAdapter;
     LinearLayoutManager recyclerViewLayoutManager;
-    Presenter presenter;
+    FragmentsPresenter presenter;
 
-    public static ListFragment newInstance(String title) {
+    Button btnAddItems;
+    Button btnDropDb;
+
+    public static MonthFragment newInstance(String title) {
         Bundle args = new Bundle();
         args.putString("title", title);
-        ListFragment fragment = new ListFragment();
+        MonthFragment fragment = new MonthFragment();
         fragment.setArguments(args);
         Log.d(LOG, "Create fragment");
-        return new ListFragment();
+        return new MonthFragment();
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Log.d(LOG, "onCreate fragment");
-
         realm = Realm.getDefaultInstance();
         Model model = new Model(realm);
-        presenter = new Presenter(model);
+        presenter = new FragmentsPresenter(model);
+        Log.d(LOG, "отдаю ссылку на фрагмент в презентер" + this);
         presenter.attachView(this);
-        super.onCreate(savedInstanceState);
+
+
     }
 
 
@@ -59,11 +64,37 @@ public class ListFragment extends Fragment implements command_e.androidintensive
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(LOG, "onCreateView fragment");
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.recycler_view, container, false);
-        recyclerView = (RecyclerView) viewGroup.findViewById(R.id.recyclerView);
-        init();
 
-        return viewGroup;
+        ViewGroup v = (ViewGroup) inflater.inflate(R.layout.recycler_view, container, false);
+
+        recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        recyclerViewLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(recyclerViewLayoutManager);
+        recyclerViewAdapter = new RecyclerViewAdapter(getContext());
+        recyclerView.setAdapter(recyclerViewAdapter);
+
+        btnAddItems = (Button) v.findViewById(R.id.btn_add_items);
+        btnAddItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG,"Созданы фейковые записи");
+                presenter.add(MonthFragment);
+            }
+        });
+
+        btnDropDb = (Button) v.findViewById(R.id.btn_drop_db);
+        btnDropDb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG,"Созданы фейковые записи");
+                presenter.clear(MonthFragment);
+
+            }
+        });
+
+
+        presenter.viewIsReady(MonthFragment);
+        return v;
     }
 
     @Override
@@ -79,46 +110,20 @@ public class ListFragment extends Fragment implements command_e.androidintensive
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         realm.removeAllChangeListeners();
         presenter.detachView();
     }
 
-    public void init() {
-        recyclerViewLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        recyclerViewAdapter = new RecyclerViewAdapter(getContext(), findAllItems());
-        recyclerView.setAdapter(recyclerViewAdapter);
-        presenter.viewIsReady();
-
-        refreshRecycleViewOnChangeRealmResult();//обновление данных в RecyclerView
-//         при изменении выборки запроса вывода всех записей
-    }
-
-
-    public RealmResults<Day> findAllItems() {
-        Log.d(LOG, "Произошла выборка данных из бд");
-        Realm realm = Realm.getDefaultInstance();
-        return realm.where(Day.class).findAll();
-    }
-
     public void showDays(RealmResults<Day> daysList) {
         Log.d(LOG, "данные пришли из presenter во fragment, передаем их адаптеру" + daysList );
         recyclerViewAdapter.setData(daysList);
-    }
-
-    private void refreshRecycleViewOnChangeRealmResult() {
-        realm = Realm.getDefaultInstance();
-        RealmResults<Day> results = realm.where(Day.class).findAll();
-
-        results.addChangeListener(new RealmChangeListener() {
-            @Override
-            public void onChange(Object o) {
-                presenter.viewIsReady();
-                Log.d(LOG, "Список обновлён");
-            }
-        });
     }
 }
 

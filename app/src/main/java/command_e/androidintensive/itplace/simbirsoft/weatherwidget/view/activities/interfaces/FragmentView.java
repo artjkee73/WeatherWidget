@@ -7,6 +7,6 @@ import io.realm.RealmResults;
  * Created by artemqa on 13.10.2017.
  */
 
-public interface View {
+public interface FragmentView {
     void showDays(RealmResults<Day> daysList);
 }

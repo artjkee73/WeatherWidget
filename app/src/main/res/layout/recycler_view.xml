@@ -9,8 +9,29 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="@dimen/then_use_layout_weight"
+        android:layout_weight="10"
+        app:layoutManager="LinearLayoutManager"/>
 
+    <LinearLayout
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/then_use_layout_weight">
+
+        <Button
+            android:id="@+id/btn_add_items"
+            android:layout_weight="1"
+            android:layout_width="@dimen/then_use_layout_weight"
+            android:layout_height="match_parent"
+
+            android:text="@string/btn_add_fake_items"/>
+        <Button
+            android:id="@+id/btn_drop_db"
+            android:layout_weight="1"
+            android:layout_width="@dimen/then_use_layout_weight"
+            android:layout_height="match_parent"
+
+            android:text="@string/btn_drop_database"/>
+    </LinearLayout>
 </LinearLayout>

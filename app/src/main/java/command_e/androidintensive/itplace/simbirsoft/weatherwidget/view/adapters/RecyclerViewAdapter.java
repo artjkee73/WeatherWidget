@@ -29,9 +29,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private LayoutInflater inflater;
     private RealmResults<Day> results;
 
-   public RecyclerViewAdapter(Context context, RealmResults<Day> results){
+   public RecyclerViewAdapter(Context context){
         this.inflater = LayoutInflater.from(context);
-        this.results = results;
+//        this.results = results;
     }
 
     public void setData(RealmResults<Day> dayList){
@@ -66,7 +66,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private static final String LOG = "MyLog";
 
 
