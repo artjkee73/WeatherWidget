@@ -31,7 +31,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
    public RecyclerViewAdapter(Context context){
         this.inflater = LayoutInflater.from(context);
-//        this.results = results;
     }
 
     public void setData(RealmResults<Day> dayList){
@@ -67,7 +66,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private static final String LOG = "MyLog";
 
 
         @BindView(R.id.icon_weather) ImageView iconWeather;

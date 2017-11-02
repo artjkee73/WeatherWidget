@@ -1,4 +1,4 @@
-package command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.activities.interfaces;
+package command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.fragments.interfaces;
 
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.realm.model.Day;
 import io.realm.RealmResults;

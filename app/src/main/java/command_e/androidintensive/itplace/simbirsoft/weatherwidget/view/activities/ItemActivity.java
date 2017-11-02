@@ -9,11 +9,15 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.R;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.model.Model;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.presenter.ItemActivityPresenter;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.presenter.MainActivityPresenter;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.realm.model.Day;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.activities.interfaces.ItemActivityView;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class ItemActivity extends AppCompatActivity {
+public class ItemActivity extends AppCompatActivity implements ItemActivityView {
     private static final String LOG = "MyLog";
 
     @BindView (R.id.icon_weather) ImageView iconWeather;
@@ -21,6 +25,8 @@ public class ItemActivity extends AppCompatActivity {
     @BindView (R.id.date) TextView date;
     @BindView (R.id.temperature) TextView temperature;
     @BindView (R.id.weather_characteristic) TextView weatherCharacter;
+
+    ItemActivityPresenter presenter;
     Realm realm;
 
 
@@ -30,33 +36,35 @@ public class ItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
         ButterKnife.bind(this);
+
+        realm = Realm.getDefaultInstance();
+        Model model = new Model(realm);
+        presenter = new ItemActivityPresenter(model);
+        presenter.attachView(this);
         bindingDataFromDB(); //  приём даты и Bundle и выборка из бд по ней
 
     }
 
     public void bindingDataFromDB(){
-
         Intent intent = getIntent();
         String dateI = intent.getStringExtra("date");
-        realm = Realm.getDefaultInstance();
-        RealmResults<Day> results = realm.where(Day.class)
-                .equalTo("date" , dateI)
-                .findAll();
-        Day day = results.where()
-                .equalTo("date" , dateI)
-                .findFirst();
-
-        dayOfWeek.setText(day.getDayOfWeek());
-        date.setText(day.getDate());
-        temperature.setText(day.getTemperature());
-        weatherCharacter.setText(day.getWeatherCharacter());
+        presenter.loadDay(dateI);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        presenter.detachView();
         if (!realm.isClosed()) {
             realm.close();
         }
+    }
+
+    @Override
+    public void showClickedDay(Day day) {
+        dayOfWeek.setText(day.getDayOfWeek());
+        date.setText(day.getDate());
+        temperature.setText(day.getTemperature());
+        weatherCharacter.setText(day.getWeatherCharacter());
     }
 }

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
+import android.view.ViewGroup;
 
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.fragments.MonthFragment;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.fragments.WeekFragment;
@@ -17,11 +18,8 @@ import java.util.List;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     private static final String LOG = "MyLog";
-
     private final static int NUM_ITEMS = 2;
-
     private final List<String> listTitle = new ArrayList<>();
-
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -37,6 +35,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
+
     @Override
     public int getCount() {
         return NUM_ITEMS;
@@ -51,6 +50,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         Log.d(LOG," Присвоили title  " + title);
         listTitle.add(title);
     }
+
 }
 
 

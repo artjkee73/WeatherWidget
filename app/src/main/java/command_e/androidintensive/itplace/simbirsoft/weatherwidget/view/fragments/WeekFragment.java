@@ -14,7 +14,7 @@ import command_e.androidintensive.itplace.simbirsoft.weatherwidget.R;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.model.Model;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.presenter.FragmentsPresenter;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.realm.model.Day;
-import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.activities.interfaces.FragmentView;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.fragments.interfaces.FragmentView;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.adapters.RecyclerViewAdapter;
 import io.realm.Realm;
 import io.realm.RealmResults;

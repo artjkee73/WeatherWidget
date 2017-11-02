@@ -23,6 +23,14 @@ public class Model {
         this.realm = realm;
     }
 
+
+    public void loadClickedDay(String date ,LoadOneItemCallback loadCallback) {
+
+                RealmResults<Day> daysListWeek = realm.where(Day.class).findAll();
+                Day day = daysListWeek.where().equalTo("date",date).findFirst();
+                loadCallback.onLoadDay(day);
+    }
+
     public void loadDays(int fragmentType ,LoadCallback loadCallback) {
 
         switch (fragmentType){
@@ -82,10 +90,14 @@ public class Model {
         callback.onComplete();
     }
 
+
     public interface CompleteCallback{
         void onComplete();
     }
     public interface LoadCallback{
         void onLoad(RealmResults<Day> daysList);
+    }
+    public interface LoadOneItemCallback{
+        void onLoadDay(Day day);
     }
 }

@@ -4,7 +4,7 @@ import android.util.Log;
 
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.model.Model;
 import command_e.androidintensive.itplace.simbirsoft.weatherwidget.realm.model.Day;
-import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.activities.interfaces.FragmentView;
+import command_e.androidintensive.itplace.simbirsoft.weatherwidget.view.fragments.interfaces.FragmentView;
 import io.realm.RealmResults;
 
 /**
